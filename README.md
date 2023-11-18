@@ -38,7 +38,3 @@ Komentarze oceniającego [-]
 [+]z6: 0.1/1
 [+]z6: IndexError for "CCATGCGCGCGTAACGCGATGGGGTGAAATGCGCGCGTAGA"
 
-
-[+](Provisional) RESULT: 48%
-
-Let's get to 100%
