@@ -1,16 +1,18 @@
-'''
+"""
 @author: Dominik Cedro
-@date: 17.11.2023
+@date: 18.11.2023
 This is corrected version of my code.
-'''
+"""
 from math import floor as fl
 import matplotlib.pyplot as plt
+import random
+
 
 def weekday(day, month, year):
-    '''Task 1.It returns day of the week on given day, month and year.
+    """Task 1.It returns day of the week on given day, month and year.
     
     User will provide day, month and year of interest. This function will
-        return which day of the week was.
+        return which day of the week it was then.
     
     Args:
         day : integer, day of the week: 0 for Sunday, 1 for Monday, 2 for Tuesday, and so forth..
@@ -19,10 +21,12 @@ def weekday(day, month, year):
 
     Returns:
         d_zero : string, that's the day the user was searching for.
-
-    Raises:
-
-    '''
+    """
+    for argument in [day, month, year]:
+        if not isinstance(argument, int):
+            raise TypeError("All of arguments must be positive numeric (int).")
+        elif argument <= 0:
+            raise TypeError("All of arguments must be positive numeric (int).")
     d = day
     m = month
     y = year
@@ -45,84 +49,58 @@ def weekday(day, month, year):
             ]
     return week[d_zero]
 
-def segment_lenght(ap, ak, bp, bk):
-    '''Task 2.Returns common segment of two sections.
+
+def segment_lenght(Ap, Ak, Bp, Bk):
+    """Task 2.Returns common segment of two sections.
 
     User will provide two sections, which are placed on one axis,
     then the function will calculate what is the common part.
 
-    Parameters:
-    Ap : Float, beginning of A section
-    Ak : Float, end of A section
-    Bp : Float, beginning of B section
-    Bk : Float, end of B section
+    Args:
+        Ap : Float, beginning of A section
+        Ak : Float, end of A section
+        Bp : Float, beginning of B section
+        Bk : Float, end of B section
+
     Returns:
-    common: float, common part of two sections
+        intersection: float, common part of two sections
+        None: when segments have no common part
 
-    '''
-    if ap > ak:
-        ap, ak = ak, ap
-    if bp > bk:
-        bp, bk = bk, bp
+    """
+    for argument in [Ap, Ak, Bp, Bk]:
+        if not isinstance(argument, (int, float)):
+            raise TypeError("All of arguments must be numeric (int/float).")
+    Ap, Ak = sorted([Ap, Ak])
+    Bp, Bk = sorted([Bp, Bk])
 
+    if Ak < Bp:
+        return None
     else:
-        a = [ap, ak]
-        b = [bp, bk]
-        common = []
-
-    if ap < ak and bp < bk and ak < bp:
-        return None
-    elif bp < bk and ap < ak and bk < ap:
-        return None
-    elif ap < bk and ak == bk:
-        return ak
-    elif bp < ak and bk == ap:
-        return ap
-    elif ap == bp and bp < bk and bk < ak:
-        common = [ap, bk]
-        return common
-    elif ap == bp and bp < bk and ak < bk:
-        common = [ap, ak]
-        return common
-    elif ap < bp and ak == bk:
-        common = [bp, ak]
-        return common
-    elif bp < ap and ak == bk:
-        common = [ap, bk]
-        return common
-    elif ap < bp and bk < ak:
-        common = [bp, bk]
-        return common
-    elif bp < ap and ak < bk:
-        common = [ap, ak]
-        return common
-    elif ap == bp and ak == bk:
-        common = a
-        return common
+        intersection = (max(Ap, Bp), min(Ak, Bk))
+        return intersection
 
 
-
-    
-def random_walk(distance):
-    '''Task 3.This function shows a random walk via plot
+def random_walk(n):
+    """Task 3.This function shows a random walk via plot
 
     This function represents a walk of a person in two dimensional area.
     Person starts from point (0,0) and walks randomly in one of 4 ways until
     he reaches n moves.
 
-    Arguments:
-    n : integer, this marks the distance from the
+    Args:
+        n : integer, this marks the distance from the
 
     Returns:
-    plot: plot, plot that shows the trajectory of the person
-    coords: list of tuples, list of coordinates that the walker reached until he stopped
-    '''
+        plot: plot, plot that shows the trajectory of the person
+        coords: list of tuples, list of coordinates that the walker reached until he stopped
+    """
 
-    current_position = (0,0)
+    current_position = (0, 0)
     list_of_positions = []
-    while (abs(0-current_position[0]) + abs(0-current_position[1])) < distance:
+    random.seed(42)
+    while (abs(0 - current_position[0]) + abs(0 - current_position[1])) < n:
         current_position = list(current_position)
-        current_position[random.choice([1,0])] += random.choice([-1, 1])
+        current_position[random.choice([1, 0])] += random.choice([-1, 1])
         list_of_positions.append(tuple(current_position))
 
     return list_of_positions
@@ -139,21 +117,22 @@ def random_walk(distance):
 # print(coordinates)
 
 def dec2bin(x):
-    '''Task 4. Turns decimal to binary
+    """Task 4. Turns decimal to binary
 
     This function will translate number written in decimal form to number
     written in binary form. If the input number is negative it will write one
     extra zero at the beggining
 
-    Parameters
-    ----------
-    x : int
-        It is a number in decimal form, can be negative, can't be a flota
+    Args:
+        x : int It is a number in decimal form, can be negative, can't be a flota
 
-    Returns
-    -------
-    binary: string, It is a number in binary form, it's in form of a string.
-    '''
+    Returns:
+        binary: string, It is a number in binary form, it's in form of a string
+        negbinary: string, it is a given number in binary form but when input is negative.
+         It starts with "0" to mark it.
+    """
+    if not isinstance(x, int):
+        raise TypeError('All of arguments must be numeric (int).')
     binary = ""
     negbinary = "0"
     negative = False
@@ -176,18 +155,19 @@ def dec2bin(x):
     else:
         return binary[::-1]
 
+
 def dna_complement(orig_strand):
-    '''Task 5. Complements DNA strand given by user.
+    """Task 5. Complements DNA strand given by user.
 
     This function will complement DNA that is given to it in form of string
     Complemented DNA strand will be sent back to user.
 
-    Parameters:
+    Args:
     orig_strand: string, strand of dna that will be complemented by function
 
     Returns:
     new_strand: string, complemented original strand
-    '''
+    """
     new_strand = ""
     letters = ["A", "T", "C", "G"]
     for k in range(len(orig_strand)):
@@ -203,4 +183,3 @@ def dna_complement(orig_strand):
             print("Wrong input, strand consists of incorrect letters.")
             return None
     return new_strand
-
